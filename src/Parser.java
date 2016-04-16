@@ -124,7 +124,6 @@ public class Parser {
             //          add(key+firstState, double)
             //          add(key+secondState, double)
             //      incrementParents
-            //while (true) {
             Set<Pair<String, String>> parentKey = new HashSet<>();
             for (int parentId = 0; parentId < parentsCount; ++parentId) {
                 parentKey.add(new Pair<>(parents.get(parentId).getName(),
@@ -149,7 +148,6 @@ public class Parser {
             }
             if (exitFlag)
                 break;
-            //}
 
             // get new line
             try {
@@ -162,39 +160,6 @@ public class Parser {
             }
         }
     }
-
-//    public static ArrayList<Factor> executeQuery(String filePath, Factor factor) {
-//        InputStream in;
-//        BufferedReader reader;
-//        ArrayList<Factor> results=new ArrayList<>();
-//        try {
-//            in = Files.newInputStream(Paths.get(filePath));
-//            reader=new BufferedReader(new InputStreamReader(in));
-//
-//            String line=null;
-//            boolean inOutput=false;
-//            Set<Pair<String,String>> conditions=new HashSet<>();
-//            ArrayList<String> outputs=new ArrayList<>();
-//
-//            while ((line=reader.readLine())!=null) {
-//                if(!inOutput) {
-//                    if(line.startsWith("Output")) {
-//                        inOutput=true;
-//                        continue;
-//                    }
-//                }else {
-//                    outputs.add(line);
-//                }
-//            }
-//
-//            for(String output:outputs) {
-//                results.add(factor.executeQuery(conditions, output));
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return results;
-//    }
 
     public static Set<Pair<String,String>> parseConditions(String filePath) {
         InputStream in;

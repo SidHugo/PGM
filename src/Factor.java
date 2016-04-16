@@ -11,7 +11,6 @@ public class Factor {
     private ArrayList<String> states=new ArrayList<>();
     Set<String> columnNames=new HashSet<>();
     Map<Set<Pair<String, String>>,Double> potentials=new HashMap<>();
-    // Map<Set<Pair<String, String>>,Double> potentialsTogether=new HashMap<>();
 
     public Factor(){}
 
@@ -53,35 +52,17 @@ public class Factor {
         }
     }
 
-//    public void addPotentialsTogether(Set<Pair<String, String>> key, double value) {
-//        potentialsTogether.put(key, value);
-//        for(Pair<String, String> pair:key)
-//            columnNames.add(pair.getKey());
-//    }
-
     public Double getPotential(Set<Pair<String, String>> key) {
         return potentials.get(key);
     }
-
-//    public Double getPotentialTogether(Set<Pair<String, String>> key) {
-//        return potentialsTogether.get(key);
-//    }
 
     public boolean potentialsContainsKey(Set<Pair<String, String>> key) {
         return potentials.containsKey(key);
     }
 
-//    public boolean potentialsTogetherContainsKey(Set<Pair<String, String>> key) {
-//        return potentialsTogether.containsKey(key);
-//    }
-
     public Map<Set<Pair<String, String>>, Double> getPotentials() {
         return potentials;
     }
-
-//    public Map<Set<Pair<String, String>>, Double> getPotentialsTogether() {
-//        return potentialsTogether;
-//    }
 
     public boolean potentialsContainsNode(String node) {
         for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentials.entrySet()) {
@@ -93,17 +74,6 @@ public class Factor {
         }
         return false;
     }
-
-//    public boolean potentialsTogetherContainsNode(String node) {
-//        for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentialsTogether.entrySet()) {
-//            for(Pair<String, String> pair:entry.getKey()) {
-//                if(pair.getKey().equals(node)) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
 
     public boolean potentialsContainsState(String state) {
         for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentials.entrySet()) {
@@ -120,46 +90,6 @@ public class Factor {
         this.states = states;
     }
 
-    //    public boolean potentialsTogetherContainsState(String state) {
-//        for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentialsTogether.entrySet()) {
-//            for(Pair<String, String> pair:entry.getKey()) {
-//                if(pair.getValue().equals(state)) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-
-//    public void normalizePotentialsTogether() {
-//        double sum=0;
-//        for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentialsTogether.entrySet()) {
-//            sum+=entry.getValue();
-//        }
-//        if(sum!=0) {
-//            Map<Set<Pair<String, String>>,Double> newPotentials=new HashMap<>();
-//            for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentialsTogether.entrySet()) {
-//                entry.setValue(entry.getValue()/sum);
-//            }
-//        }
-//    }
-//
-//    public Factor getNormalizePotentialsTogether() {
-//        double sum=0;
-//        for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentialsTogether.entrySet()) {
-//            sum+=entry.getValue();
-//        }
-//        if(sum!=0) {
-//            Map<Set<Pair<String, String>>,Double> newPotentials=new HashMap<>();
-//            for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentialsTogether.entrySet()) {
-//                newPotentials.put(entry.getKey(), entry.getValue()/sum);
-//            }
-//            return new Factor(columnNames, potentials, newPotentials);
-//        } else {
-//            return new Factor(columnNames, potentials, potentialsTogether);
-//        }
-//    }
-
     public Factor normalize() {
         double sum=0;
         for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentials.entrySet()) {
@@ -168,34 +98,16 @@ public class Factor {
         Map<Set<Pair<String, String>>, Double> newPotentials=new HashMap<>();
         if(sum!=0) {
             for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentials.entrySet()) {
-                //entry.setValue(entry.getValue()/sum);
                 newPotentials.put(entry.getKey(), entry.getValue()/sum);
             }
         }
         return new Factor(states, columnNames, newPotentials);
     }
 
-//    public Factor getNormalizePotentialsTogether() {
-//        double sum=0;
-//        for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentials.entrySet()) {
-//            sum+=entry.getValue();
-//        }
-//        if(sum!=0) {
-//            Map<Set<Pair<String, String>>,Double> newPotentials=new HashMap<>();
-//            for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentials.entrySet()) {
-//                newPotentials.put(entry.getKey(), entry.getValue()/sum);
-//            }
-//            return new Factor(states, columnNames, newPotentials);
-//        } else {
-//            return new Factor(states, columnNames, potentials);
-//        }
-//    }
-
     public Factor marginalizeExept(Collection<String> exepts) {
         Map<Set<Pair<String, String>>,Double> newPotentials=new HashMap<>();
         for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentials.entrySet()) {
             Set<Pair<String, String>> newKey=new HashSet<>(entry.getKey());
-            //newKey.removeAll(exept);
             Set<Pair<String, String>> keysToRemove=new HashSet<>();
             for(Pair<String, String> pair:newKey) {
                 for(String exept:exepts) {
@@ -223,7 +135,6 @@ public class Factor {
         Map<Set<Pair<String, String>>,Double> newPotentials=new HashMap<>();
         ArrayList<String> columnNamesToRemove=new ArrayList<>();
         for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentials.entrySet()) {
-            //Set<Pair<String, String>> newKey=entry.getKey();
             Set<Pair<String, String>> newKey=new HashSet<>(entry.getKey());
             Set<Pair<String, String>> keysToRemove=new HashSet<>();
             for(Pair<String, String> pair:newKey) {
@@ -274,11 +185,6 @@ public class Factor {
 
     public Factor select(Collection<Pair<String, String>> condition, ArrayList<String> interests) {
         Map<Set<Pair<String, String>>,Double> newPotentials=new HashMap<>();
-//        Map<Set<Pair<String, String>>,Double> newPotentialsTogether=new HashMap<>();
-//        for(Map.Entry<Set<Pair<String, String>>,Double> entry:potentialsTogether.entrySet()) {
-//            if(entry.getKey().containsAll(condition))
-//                newPotentialsTogether.put(entry.getKey(), entry.getValue());
-//        }
 
         // get conditions that could be in this factor
         ArrayList<Pair<String, String>> matchingConditions=new ArrayList<>();
@@ -305,11 +211,6 @@ public class Factor {
     }
 
     public static Factor multiply(Factor left, Factor right) {
-//        if(right.getPotentials().size()==0)
-//            return left;
-
-        //////////////////////// MAY BE NEED TO CHANGE LEFT AND RIGHT FOR LEFT TO BE LARGER /////////////////////////
-
         Factor newFactor=new Factor();
         // find shared columns
         ArrayList<String> sharedColumns=new ArrayList<>();
@@ -321,7 +222,6 @@ public class Factor {
         }
 
         // check shared columns. if they are equal - multilpy and put
-
         if(sharedColumns.size()>0) {
             // for each left row
             for (Map.Entry<Set<Pair<String, String>>, Double> leftEntry : left.getPotentials().entrySet()) {

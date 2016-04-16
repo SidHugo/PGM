@@ -9,19 +9,6 @@ public class PGMExecutor {
     public static Factor executeWithUniversalNode(ArrayList<Node> nodes, Collection<Pair<String, String>> conditions,
                                                 ArrayList<String> output) {
         Node universalNode = makeUniversalNode(nodes);
-//        ArrayList<String> exepts=new ArrayList<>();
-//        for(String column:universalNode.getFactor().getColumnNames()) {
-//            boolean addToExept=true;
-//            for(Pair<String, String> pair:conditions) {
-//                if(pair.getKey().equals(column)) {
-//                    addToExept=false;
-//                    break;
-//                }
-//            }
-//            if(addToExept)
-//                exepts.add(column);
-//        }
-//        exepts.removeAll(output);
         ArrayList<String> interests = getInterests(conditions, output);
         return universalNode.getFactor().marginalize(interests).select(conditions, interests).normalize();
 
@@ -49,18 +36,10 @@ public class PGMExecutor {
         // make universalLeaf
         Node universalNode=new Node("universalLeaf");
         universalNode.setFactor(new Factor("universalLeaf", "universalState"));
-//        Set<Pair<String, String>> universalKey=new HashSet<>();
-//        universalKey.add(new Pair<>("universalLeaf", "universalState"));
-//        universalNode.addPotential(universalKey, 1);
-//        ArrayList<String> universalStates=new ArrayList<>();
-//        universalStates.add("universalState");
-//        universalNode.setStates(universalStates);
-
 
         // while
         while(true) {
             if(openList.size()==0) {
-                //universalNode.getFactor().normalizePotentials();
                 return universalNode;
             }
             Node currentNode=null;
@@ -128,10 +107,6 @@ public class PGMExecutor {
                 if(currentNode!=null)
                     break;
             }
-//            universalNode.setFactor(Factor.multiply(currentNode.getFactor(), universalNode.getFactor()));
-
-            //resultFactor=Factor.multiply(resultFactor, currentNode.getFactor().marginalize(interests).select(conditions, interests));
-            //resultFactor=Factor.multiply(resultFactor, currentNode.getFactor()).marginalize(interests).select(conditions, interests);
             resultFactor=Factor.multiply(resultFactor, currentNode.getFactor());
             openList.remove(currentNode);
             closeList.add(currentNode);
@@ -218,10 +193,7 @@ public class PGMExecutor {
                 if(currentNode!=null)
                     break;
             }
-//            universalNode.setFactor(Factor.multiply(currentNode.getFactor(), universalNode.getFactor()));
-
             resultFactor=Factor.multiply(resultFactor, currentNode.getFactor());
-            //resultFactor=Factor.multiply(resultFactor, currentNode.getFactor()).marginalize(interests).select(conditions, interests);
             openList.remove(currentNode);
             closeList.add(currentNode);
             for(Node n:currentNode.getChildren()) {
@@ -258,23 +230,17 @@ public class PGMExecutor {
         childrenToAnalize.addAll(outputNode.getChildren());
 
         while (parentsToAnalize.size()>0 || childrenToAnalize.size()>0) {
-            ///////////// TODO: consider observables ////////////////////
             ArrayList<Node> childrenToAdd=new ArrayList<>();
             ArrayList<Node> parentsToAdd=new ArrayList<>();
             for (Node child : childrenToAnalize) {
-//            for(int i=0; i<childrenToAnalize.size(); ++i) {
-                //Node child=childrenToAnalize.get(i);
                 if (!observables.contains(child)) {
                     activatedNodes.addAll(child.getChildren());
-                    //childrenToAnalize.addAll(child.getChildren());
                     for(Node tryChild:child.getChildren()) {
                         if(!closeAsChild.contains(tryChild) && !childrenToAnalize.contains(tryChild))
                             childrenToAdd.add(tryChild);
                     }
                 } else {
                     activatedNodes.addAll(child.getParents());
-                    //parentsToAnalize.addAll(child.getParents());
-                    //parentsToAdd.addAll(child.getParents());
                     for(Node tryParent:child.getParents()) {
                         if(!closeAsParent.contains(tryParent) && !parentsToAnalize.contains(tryParent))
                             parentsToAdd.add(tryParent);
@@ -286,32 +252,20 @@ public class PGMExecutor {
             parentsToAnalize.addAll(parentsToAdd);
             parentsToAdd.clear();
             for (Node parent : parentsToAnalize) {
-            //for(int i=0; i<parentsToAnalize.size(); ++i) {
-            //    Node parent=parentsToAnalize.get(i);
                 if (!observables.contains(parent)) {
                     activatedNodes.addAll(parent.getParents());
                     activatedNodes.addAll(parent.getChildren());
-//                    childrenToAnalize.addAll(parent.getChildren());
-//                    parentsToAnalize.addAll(parent.getParents());
-
-                    //childrenToAdd.addAll(parent.getChildren());
+//
                     for(Node tryChild:parent.getChildren()) {
                         if(!closeAsChild.contains(tryChild) && !childrenToAnalize.contains(tryChild))
                             childrenToAdd.add(tryChild);
                     }
-                    //parentsToAdd.addAll(parent.getParents());
                     for(Node tryParent:parent.getParents()) {
                         if(!closeAsParent.contains(tryParent) && !parentsToAnalize.contains(tryParent))
                             parentsToAdd.add(tryParent);
                     }
                 } else {
                     activatedNodes.addAll(parent.getChildren());
-//                    childrenToAnalize.addAll(parent.getChildren());
-                    //childrenToAdd.addAll(parent.getChildren());
-
-
-//                    parentsToAdd.removeAll(parent.getParents());
-//                    childrenToAdd.removeAll(parent.getParents());
                     for(Node tryChild:parent.getChildren()) {
                         if(!closeAsChild.contains(tryChild) && !childrenToAnalize.contains(tryChild))
                             childrenToAdd.add(tryChild);

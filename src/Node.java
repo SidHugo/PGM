@@ -52,21 +52,9 @@ public class Node {
         return factor.getPotential(key);
     }
 
-//    public void addPotentialTogether(Set<Pair<String, String>> key, double value) {
-//        factor.addPotentialsTogether(key, value);
-//    }
-
-//    public Double getPotentialTogether(Set<Pair<String, String>> key) {
-//        return factor.getPotentialTogether(key);
-//    }
-
     public Map<Set<Pair<String, String>>,Double> getPotentials() {
         return factor.getPotentials();
     }
-
-//    public Map<Set<Pair<String, String>>,Double> getPotentialsTogether() {
-//        return factor.getPotentialsTogether();
-//    }
 
     public Factor getFactor() {
         return factor;

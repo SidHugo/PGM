@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PGM:jar">
+    <output-path>D:/Users/Sid_Hugo/workspace/PGM/PGM/out/artifacts</output-path>
+    <root id="archive" name="PGM.jar">
+      <element id="module-output" name="PGM" />
+    </root>
+  </artifact>
+</component>
